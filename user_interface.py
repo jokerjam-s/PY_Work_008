@@ -2,8 +2,8 @@
 from data_note import data_struct as ds
 from in_out import *
 
-# запрос нового сотрудника
-def ask_new_rec() -> dict:
+# запрос новых данных
+def ask_new_rec(id : int = -1) -> dict:
     data = {}
     for k in ds.keys():
         if ds[k][0] == 'T':
@@ -11,9 +11,35 @@ def ask_new_rec() -> dict:
         elif ds[k][0] == 'N':
             data[k] = input_float(f'введите {ds[k][1]}: ')
         elif ds[k][0] == 'I':
-            data[k] = 0
+            data[k] = id
 
     return data
+
+# запрос информации для CRUD или отображения
+def ask_sel_rec()-> dict:
+    print('поле для поиска:')
+    i = 0
+
+    for k in ds.keys():
+        i += 1
+        print(f'{i} - {ds[k][1]}')
+    
+    fld_no = input_int('>')-1
+
+    if fld_no not in range(1, i):
+        return {}
+
+    k = list(ds.keys())[fld_no]
+
+    if ds[k][0] == 'T':
+        val = input_str('Значение: ')
+    else:
+        val = input_int('Значение: ')
+    lst = [ds[k][0], val]
+    
+    return {k: lst}
+
+
 
 # отображение данных
 def show_data(data: list):
@@ -42,4 +68,5 @@ def show_data(data: list):
         print(line)
 
     print(head_line)
-    os.system('pause')
+        
+        
